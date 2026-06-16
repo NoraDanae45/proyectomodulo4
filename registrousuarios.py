@@ -31,6 +31,7 @@ from datetime import datetime
 Nombre_Archivo = "usuarios.txt"
 Archivos_Validos = "validos.txt"
 Archivo_Errores = "errores.txt"
+Archivo_profe = "usuarios_profe.txt"
 
 def crear_archivos():
     archivos = [Nombre_Archivo, Archivos_Validos, Archivo_Errores]
@@ -131,48 +132,68 @@ def buscar_usuario():
     if not encontrado:
         print("Usuario no encontrado")
 
-def validar_archivo():
+def validar_archivo(nombre_archivo):
 
-    with open(Nombre_Archivo,"r", encoding="utf-8") as archivo, \
+    with open(nombre_archivo,"r", encoding="utf-8") as archivo, \
          open(Archivos_Validos, "w", encoding="utf-8") as validos,\
          open(Archivo_Errores, "w", encoding="utf-8") as errores:
         
         for linea in archivo:
+            print("Leyendo:", linea.strip())
             registro_valido = True
+            mensaje =""
             partes = linea.strip().split(",")
             if len(partes) != 3:
                     registro_valido = False
 
             if len(partes) == 3:
+                registro_valido = False
+                mensaje = "Cantidad incorrecta de campos"
                 nombre = partes[0]
                 edad = partes[1]
                 fecha = partes[2]
             
                 if not nombre:
                     registro_valido = False
+                    mensaje = "Nombre vacío"
 
                 if not nombre.replace(" ", "").isalpha():
                     registro_valido = False
+                    mensaje = "Nombre invalido"
 
                 if not fecha:
                     registro_valido = False
+                    mensaje = "Fecha vacía"
 
                 try:
+                    print("Edad antes de int: ", edad)
                     edad = int(edad)
-                    if edad <= 0:
+                    print("Edad convertida: ",edad)
+
+                    if edad <= 0 or edad > 120:
+                        print(">>> EDAD INVÁLIDA DETECTADA <<<")
                         registro_valido = False
+                        mensaje = "Edad fuera de rango"
+                       
                 except ValueError:
+                    print("No se pudo convertir edad")
                     registro_valido = False
+                    mensaje = "Edad no numérica"
+                    print("Registro válido: ", registro_valido)
 
                 try:
                     datetime.strptime(fecha, "%Y-%m-%d %H:%M:%S")
                 except ValueError:
                     registro_valido = False
+                    mensaje = "Fecha invalida"
                     
+                print(f"Línea: {linea.strip()}")
+                print(f"Registro válido: {registro_valido}")  
+
             if registro_valido:
                 validos.write(linea)
             else:
-                errores.write(linea)
+                errores.write(f"{linea.strip()} --> Error: {mensaje}\n")
     
 
 def menu():
@@ -183,8 +204,9 @@ def menu():
         print("1. Registrar usuario")
         print("2. Mostrar usuarios")
         print("3. Buscar usuario")
-        print("4. Validar archivo")
-        print("5. Salir")
+        print("4. Validar archivo generado")
+        print("5. Validar archivo profe")
+        print("6. Salir")
 
         opcion = input("Seleccione una opción: ")
 
@@ -198,10 +220,13 @@ def menu():
             buscar_usuario()
 
         elif opcion == "4":
-            validar_archivo()
+            validar_archivo(Nombre_Archivo)
             print("Archivo validado")
+        
+        elif opcion =="5":
+            validar_archivo(Archivo_profe)
 
-        elif opcion == "5":
+        elif opcion == "6":
             print("Programa finalizado")
             break
 

@@ -1,2 +1,7 @@
-Pedro,dos,2025-07-23 15:35:00
-Ana,3Luisa,78,2026-06-14 14:58:42
+Carlos,25,2026-06-12 16:31:07 --> Error: Cantidad incorrecta de campos
+Maria,-52,2026-06-12 16:31:21 --> Error: Edad fuera de rango
+Miguel,24,2026-06-12 16:31:31 --> Error: Cantidad incorrecta de campos
+,23,2026-06-12 16:31:38 --> Error: Nombre invalido
+Manuela,19,2026-06-12 16:32:05 --> Error: Cantidad incorrecta de campos
+Felipe,148,2026-06-12 16:32:22 --> Error: Edad fuera de rango
+Valentina,30,2026-06-12 16:32:31 --> Error: Cantidad incorrecta de campos
